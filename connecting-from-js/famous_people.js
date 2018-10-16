@@ -11,17 +11,21 @@ const client = new pg.Client({
 });
 
 const name = process.argv[2];
-
-client.connect((err) => {
-  if (err) {
-    return console.error("Connection Error", err);
-  }
-  //Search for matching first name
-  client.query("SELECT * FROM famous_people WHERE first_name = $1::text OR last_name = $1::text", [name], (err, result) => {
+if (name) {
+  console.log("Searching...");
+  client.connect((err) => {
     if (err) {
-      return console.err("error running query", err);
+      return console.error("Connection Error", err);
     }
-    console.log(result.rows);
-  client.end();
+    //Search for matching first name
+    client.query("SELECT * FROM famous_people WHERE first_name = $1::text OR last_name = $1::text", [name], (err, result) => {
+      if (err) {
+        return console.err("error running query", err);
+      }
+      console.log(result.rows);
+    client.end();
+    });
   });
-});
+} else {
+  console.log("Please enter a name!");
+}
