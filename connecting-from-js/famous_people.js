@@ -52,6 +52,5 @@ function formatResults(results) {
   return output;
 }
 
-
 const query = process.argv[2];
 searchForName(query);
